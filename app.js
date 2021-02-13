@@ -6,6 +6,7 @@ import helmet from "helmet";
 //parser
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import { userRouter } from "./router";
 
 const app = express();
 
@@ -33,5 +34,8 @@ app.use(middleware);
 app.get("/", middleware, handleHome);
 
 app.get("/profile", handleProfile);
+
+//app.get , app.use의 차이점 => use: /user 경로로 들어왔을 때 userRouter의 모든 함수(router)를 사용하겠다는 의미
+app.use("/user", userRouter);
 
 export default app;
