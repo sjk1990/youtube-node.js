@@ -4,7 +4,7 @@
   "description": "Cloning Youtube with Vanilla nad NodeJS",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node init.js --delay 5"
+    "start": "nodemon --exec babel-node init.js --delay 2"
   },
   "repository": {
     "type": "git",
