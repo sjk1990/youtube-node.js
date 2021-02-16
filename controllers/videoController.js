@@ -3,8 +3,8 @@ import Video from "../models/Video";
 
 export const home = async (req, res) => {
   try {
-    //find all videos
-    const videos = await Video.find({});
+    // find all videos, 순서 정렬
+    const videos = await Video.find({}).sort({ _id: -1 });
     res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
     console.log(error);
@@ -16,7 +16,7 @@ export const search = (req, res) => {
   const {
     query: { term: searchingBy },
   } = req;
-  //const searchingBy = req.query.term 과 동일한 ES6 문법
+  // const searchingBy = req.query.term 과 동일한 ES6 문법
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
@@ -82,6 +82,8 @@ export const deleteVideo = async (req, res) => {
   } = req;
   try {
     await Video.findOneAndRemove({ _id: id });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
   res.redirect(routes.home);
 };
