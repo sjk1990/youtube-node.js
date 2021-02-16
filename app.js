@@ -27,6 +27,7 @@ app.set("view engine", "pug");
 // static: directory에서 file을 보내주는 middleware
 // /uploads url로 들어갈 경우 uploads라는 directory(folder)로 들어감
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("static"));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

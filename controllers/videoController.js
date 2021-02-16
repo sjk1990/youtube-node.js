@@ -12,11 +12,19 @@ export const home = async (req, res) => {
   }
 };
 
-export const search = (req, res) => {
+export const search = async (req, res) => {
   const {
     query: { term: searchingBy },
   } = req;
-  // const searchingBy = req.query.term 과 동일한 ES6 문법
+  let videos = [];
+  try {
+    // 검색어를 포함하는 단어를 찾음 - 정규표현식 사용, option i: insensitive->대소문자 구별 X
+    videos = await Video.find({
+      title: { $regex: searchingBy, $options: "i" },
+    });
+  } catch (error) {
+    console.log(error);
+  }
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
