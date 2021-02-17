@@ -1,4 +1,4 @@
-import passport, { Strategy } from "passport";
+import passport from "passport";
 import User from "./models/User";
 
 // 이하는 순수 passport가 아닌 passport-local-mongoose에서 제공하는

@@ -1,3 +1,4 @@
+import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 
@@ -5,7 +6,7 @@ export const getJoin = (req, res) => {
   res.render("join", { pageTitle: "Join" });
 };
 
-export const postJoin = async (req, res) => {
+export const postJoin = async (req, res, next) => {
   //   console.log(req.body);
   const {
     body: { name, email, password, password2 },
@@ -23,20 +24,20 @@ export const postJoin = async (req, res) => {
       // console.log(user);
       // passport-local-mongoose function
       await User.register(user, password);
+      next();
     } catch (error) {
       console.log(error);
     }
-    // To Do: Log user in
-    res.redirect(routes.home);
   }
 };
 
 export const getLogin = (req, res) =>
   res.render("login", { pageTitle: "Log In" });
 
-export const postLogin = (req, res) => {
-  res.redirect(routes.home);
-};
+export const postLogin = passport.authenticate("local", {
+  failureRedirect: routes.login,
+  successRedirect: routes.home,
+});
 
 export const logout = (req, res) => {
   // To Do: Process Log Out
