@@ -14,5 +14,23 @@ export const localsMiddleware = (req, res, next) => {
   next();
 };
 
+// 로그인 상태에서는 이후 route,함수로 접근 불가
+export const onlyPublic = (req, res, next) => {
+  if (req.user) {
+    res.redirect(routes.home);
+  } else {
+    next();
+  }
+};
+
+// 로그인 상태에서만 접근 가능
+export const onlyPrivate = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.redirect(routes.home);
+  }
+};
+
 // single: upload only one file at once
 export const uploadVideo = multerVideo.single("videoFile");
