@@ -8,7 +8,9 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 // route
 import passport from "passport";
+import mongoose from "mongoose";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -18,6 +20,8 @@ import { localsMiddleware } from "./middlewares";
 import "./passport";
 
 const app = express();
+
+const CookieStore = MongoStore(session);
 
 app.use(helmet());
 // #2.22 video player issues
@@ -45,6 +49,8 @@ app.use(
     secret: process.env.COOKIE_SECRET,
     resave: true,
     saveUninitialized: false,
+    // cookiesotre를 mongoose를 이용해 mongodb와 연결
+    store: new CookieStore({ mongooseConnection: mongoose.connection }),
   })
 );
 app.use(passport.initialize());
