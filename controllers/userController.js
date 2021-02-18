@@ -39,8 +39,44 @@ export const postLogin = passport.authenticate("local", {
   successRedirect: routes.home,
 });
 
+// github로그인시 사용자는 github url로 이동하고, github으로 인증요청을 보냄
+export const githubLogin = passport.authenticate("github");
+
+// 로그인 요청 후 사용자는 github callback url로 돌아오고,
+// callboack함수(사용자 정보)를 받아옴
+export const githubLoginCallback = async (_, __, profile, cb) => {
+  // console.log(accessToken, refreshToken, profile, cb);
+  const {
+    _json: { id, avatar_url, name, email },
+  } = profile;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      user.githubId = id;
+      user.save();
+      return cb(null, user);
+    }
+    const newUser = await User.create({
+      email,
+      name,
+      githubId: id,
+      avatarUrl: avatar_url,
+    });
+    return cb(null, newUser);
+  } catch (error) {
+    return cb(error);
+  }
+};
+
+// callback url로 돌아온 이후 과정 처리
+export const postGithubLogIn = (req, res) => {
+  res.redirect(routes.home);
+};
+
 export const logout = (req, res) => {
-  // To Do: Process Log Out
+  // passport를 사용할 경우 로그아웃 -> req.logout()
+  // passport가 쿠키 등을 처리해줌
+  req.logout();
   res.redirect(routes.home);
 };
 
