@@ -54,6 +54,8 @@ export const githubLoginCallback = async (_, __, profile, cb) => {
     if (user) {
       user.githubId = id;
       user.save();
+      // githubLoginCallback 함수의 조건으로 cb(callback)함수를 리턴해야 함
+      // cb를 리턴하면 passport가 해당 user로 쿠키를 만들고, 저장한 후 브라우저로 전송함.
       return cb(null, user);
     }
     const newUser = await User.create({
@@ -80,7 +82,21 @@ export const logout = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const userDetail = (req, res) => res.render("userDetail");
+export const getMe = (req, res) => {
+  res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+};
+
+export const userDetail = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const user = await User.findById(id);
+    res.render("userDetail", { pageTitle: "User Detail", user });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
 
 export const editProfile = (req, res) => res.render("editProfile");
 

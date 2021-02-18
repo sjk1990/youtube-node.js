@@ -9,7 +9,7 @@ export const localsMiddleware = (req, res, next) => {
   // 모든 곳에서 접근 가능한 local변수 선언
   res.locals.siteName = "WeTube";
   res.locals.routes = routes;
-  res.locals.user = req.user || null;
+  res.locals.loggedUser = req.user || null;
   console.log(req.user);
   next();
 };
