@@ -31,6 +31,10 @@ passport.serializeUser(function (user, done) {
 });
 // 가져온 userid로 사용자 식별
 // passport.deserializeUser(User.deserializeUser());
-passport.deserializeUser(function (user, done) {
-  done(null, user);
+
+// session에 저장된 데이터를 불러올 때마다 직접 db를 참조하여 user data를 가져옴
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
 });

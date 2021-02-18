@@ -83,15 +83,17 @@ export const logout = (req, res) => {
 };
 
 export const getMe = (req, res) => {
+  console.log("getme:::", req.user);
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
 };
 
 export const userDetail = async (req, res) => {
+  console.log("userdetail:::", req);
   const {
     params: { id },
   } = req;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById({ _id: id });
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
     res.redirect(routes.home);
@@ -99,5 +101,22 @@ export const userDetail = async (req, res) => {
 };
 
 export const getEditProfile = (req, res) => res.render("editProfile");
+
+export const postEditProfile = async (req, res) => {
+  const {
+    body: { name, email },
+    file,
+  } = req;
+  try {
+    await User.findByIdAndUpdate(req.user._id, {
+      name,
+      email,
+      avatarUrl: file ? file.path : req.user.avatarUrl,
+    });
+    res.redirect(routes.me);
+  } catch (error) {
+    res.render("editProfile", { pageTitle: "Edit Profile" });
+  }
+};
 
 export const changePassword = (req, res) => res.render("changePassword");
