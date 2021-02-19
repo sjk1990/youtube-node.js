@@ -82,18 +82,29 @@ export const logout = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const getMe = (req, res) => {
+export const getMe = async (req, res) => {
   // console.log("getme:::", req.user);
-  res.render("userDetail", { pageTitle: "User Detail", user: req.user });
+  const {
+    user: { _id },
+  } = req;
+  try {
+    const user = await User.findById({ _id: _id }).populate("videos");
+    // console.log("getme:::", user);
+    res.render("userDetail", { pageTitle: "User Detail", user });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
 };
 
 export const userDetail = async (req, res) => {
-  // console.log("userdetail:::", req);
+  // console.log("userdetail:::", req.params);
   const {
     params: { id },
   } = req;
   try {
-    const user = await User.findById({ _id: id });
+    const user = await User.findById({ _id: id }).populate("videos");
+    // console.log("userdetail:::", user);
+    // console.log("loggedIn", req.user);
     res.render("userDetail", { pageTitle: "User Detail", user });
   } catch (error) {
     res.redirect(routes.home);
