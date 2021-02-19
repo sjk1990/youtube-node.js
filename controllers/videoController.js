@@ -72,7 +72,7 @@ export const getEditVideo = async (req, res) => {
 };
 
 export const postEditVideo = async (req, res) => {
-  console.log(":::::", req.params);
+  // console.log(":::::", req.params);
   const {
     params: { id },
     body: { title, description },

@@ -83,12 +83,12 @@ export const logout = (req, res) => {
 };
 
 export const getMe = (req, res) => {
-  console.log("getme:::", req.user);
+  // console.log("getme:::", req.user);
   res.render("userDetail", { pageTitle: "User Detail", user: req.user });
 };
 
 export const userDetail = async (req, res) => {
-  console.log("userdetail:::", req);
+  // console.log("userdetail:::", req);
   const {
     params: { id },
   } = req;
@@ -115,8 +115,30 @@ export const postEditProfile = async (req, res) => {
     });
     res.redirect(routes.me);
   } catch (error) {
-    res.render("editProfile", { pageTitle: "Edit Profile" });
+    res.redirect(routes.editProfile);
   }
 };
 
-export const changePassword = (req, res) => res.render("changePassword");
+export const getChangePassword = (req, res) =>
+  res.render("changePassword", { pageTitle: "Change Password" });
+
+export const postChangePassword = async (req, res) => {
+  const {
+    body: { oldPassword, newPassword, newPassword1 },
+  } = req;
+  try {
+    if (newPassword !== newPassword1) {
+      // 실패 status를 설정해서 브라우저에게 인식시킴
+      res.status(400);
+      res.redirect(`/users/${routes.changePassword}`);
+      return;
+    }
+    console.log(req.body);
+    // changePassword: passport-local-mongoose에서 지원하는 함수
+    await req.user.changePassword(oldPassword, newPassword);
+    res.redirect(routes.me);
+  } catch (error) {
+    res.status(400);
+    res.redirect(`/users/${routes.changePassword}`);
+  }
+};
