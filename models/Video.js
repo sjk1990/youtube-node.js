@@ -1,7 +1,7 @@
 // model(data): document name, schema: shape
 import mongoose from "mongoose";
 
-//schema
+//schema, id는 자동생성
 const VideoSchema = new mongoose.Schema({
   fileUrl: {
     type: String,
@@ -27,6 +27,11 @@ const VideoSchema = new mongoose.Schema({
       ref: "Comment",
     },
   ],
+  // videos의 creator를 User 스키마의 objectId와 연결
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 //model :: model-name:Video, model-shape(schema):VideoSchema
