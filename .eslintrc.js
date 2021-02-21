@@ -8,5 +8,11 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: "module",
   },
-  rules: { "no-console": "off", endOfLine: "auto" },
+  rules: {
+    "no-console": "off",
+    endOfLine: "auto",
+    env: {
+      browser: true,
+    },
+  },
 };
