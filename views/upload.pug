@@ -2,6 +2,9 @@ extends layouts/main
 
 block content
     .form-container
+        .record-container#jsRecordContainer
+            video#jsVideoPreview
+            button#jsRecordBtn Start Recording
         //- because sending type is file, set encoding type: multipart/form-data
         form(action=`/videos${routes.upload}`, method="post", enctype="multipart/form-data")
             div.fileUpload
