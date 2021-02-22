@@ -57,6 +57,7 @@ const getVideo = async () => {
     startRecording();
   } catch (error) {
     // console.log(error);
+    alert("Camera access denied, acceptable in settings");
     recordBtn.innerHTML = "☹️ Cant record";
   } finally {
     recordBtn.removeEventListener("click", getVideo);

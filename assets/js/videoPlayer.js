@@ -7,13 +7,22 @@ const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const volumeRange = document.getElementById("jsVolume");
 
+const registerView = () => {
+  const videoId = window.location.href.split("/videos/")[1];
+  fetch(`/api/${videoId}/view`, {
+    method: "POST",
+  });
+};
+
 // mdn html media element
 function handlePlayClick() {
   // read only method
   if (videoPlayer.paused) {
+    // setInterval(getCurrentTime, 1000);
     videoPlayer.play();
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
   } else {
+    // clearInterval(getCurrentTime);
     videoPlayer.pause();
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
   }
@@ -97,6 +106,7 @@ function setTotalTime() {
 }
 
 function handleEnded() {
+  registerView();
   videoPlayer.currentTime = 0;
   playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
