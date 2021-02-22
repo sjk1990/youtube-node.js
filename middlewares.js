@@ -1,10 +1,33 @@
 import multer from "multer";
+import multerS3 from "multer-s3";
+import aws from "aws-sdk";
 import routes from "./routes";
 
+const s3 = new aws.S3({
+  accessKeyId: process.env.AWS_KEY,
+  secretAccessKey: process.env.AWS_PRIVATE_KEY,
+  region: "ap-northeast-1",
+});
+
 // multer: handling file upload
-// dest : videos/ ==> 파일이 videos라는 폴더안에 저장된다
-const multerVideo = multer({ dest: "uploads/videos/" });
-const multerAvatar = multer({ dest: "uploads/avatars/" });
+const multerVideo = multer({
+  storage: multerS3({
+    s3,
+    acl: "public-read",
+    bucket: "wetube/video",
+  }),
+});
+const multerAvatar = multer({
+  storage: multerS3({
+    s3,
+    acl: "public-read",
+    bucket: "wetube/avatar",
+  }),
+});
+
+// single: upload only one file at once
+export const uploadVideo = multerVideo.single("videoFile");
+export const uploadAvatar = multerAvatar.single("avatar");
 
 export const localsMiddleware = (req, res, next) => {
   // 모든 곳에서 접근 가능한 local변수 선언
@@ -32,8 +55,3 @@ export const onlyPrivate = (req, res, next) => {
     res.redirect(routes.home);
   }
 };
-
-// single: upload only one file at once
-export const uploadVideo = multerVideo.single("videoFile");
-
-export const uploadAvatar = multerAvatar.single("avatar");
