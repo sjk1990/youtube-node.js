@@ -28,6 +28,7 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 // do not render page
 const API = "/api";
 const REGISTER_VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment";
 
 const routes = {
   home: HOME,
@@ -73,6 +74,7 @@ const routes = {
   me: ME,
   api: API,
   registerView: REGISTER_VIEW,
+  addComment: ADD_COMMENT,
 };
 
 export default routes;
