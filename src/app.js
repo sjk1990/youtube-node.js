@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import mongoose from "mongoose";
 import session from "express-session";
+import path from "path";
 import MongoStore from "connect-mongo";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
@@ -36,8 +37,8 @@ app.use(helmet({ contentSecurityPolicy: false }));
 app.set("view engine", "pug");
 // static: directory에서 file을 보내주는 middleware
 // /uploads url로 들어갈 경우 uploads라는 directory(folder)로 들어감
-app.use("/uploads", express.static("uploads"));
-app.use("/static", express.static("static"));
+app.set("views", path.join(__dirname, "views"));
+app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
