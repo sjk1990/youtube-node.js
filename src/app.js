@@ -11,6 +11,7 @@ import passport from "passport";
 import mongoose from "mongoose";
 import session from "express-session";
 import path from "path";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
@@ -55,6 +56,8 @@ app.use(
     store: new CookieStore({ mongooseConnection: mongoose.connection }),
   })
 );
+app.use(flash());
+
 app.use(passport.initialize());
 // passport.js에서 deserializeUser 함수가 실행됨.
 // 이 후, passport가 찾은 사용자 정보를 middleware나 routes의 모든 request object에 할당함.
