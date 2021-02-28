@@ -3,7 +3,7 @@
 Cloning Youtube with Vanilla and NodeJS
 
 ## About The Project
-[Project URL](https://tranquil-peak-65075.herokuapp.com)
+<a href="https://tranquil-peak-65075.herokuapp.com" target="_blank">Project URL</a>
   
 ## Built With
 - Pug
